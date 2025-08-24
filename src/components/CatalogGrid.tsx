@@ -3,52 +3,21 @@ import { useState, useEffect } from "react";
 import { Container } from "@/components/Container";
 import { Gift } from "@/types/gift";
 
-// Static gift data for static export
+// Gift data from data/gifts.json
 const staticGifts: Gift[] = [
   {
-    id: "1",
-    name: "Handcrafted Clay Pottery",
-    description: "Beautiful handcrafted clay pottery made by traditional artisans",
-    category: "Pottery",
-    priceRangeMin: 500,
-    priceRangeMax: 1500,
-    dimensions: { length: 15, width: 15, height: 20, unit: "cm" },
-    occasions: ["Housewarming", "Wedding", "Corporate Gifts"],
-    tags: ["handmade", "eco-friendly", "traditional"],
-    imageUrl: "/img/artisan-crafts.svg",
+    id: "1752938563576",
+    name: "Diya",
+    description: "Handmade Diyas",
+    category: "Home Decor",
+    priceRangeMin: 20,
+    priceRangeMax: 40,
+    dimensions: { length: 3, width: 4, height: 5, unit: "cm" },
+    occasions: ["Diwali", "Corporate Gifts"],
+    tags: ["handmade"],
     isActive: true,
-    createdAt: new Date("2024-01-01"),
-    updatedAt: new Date("2024-01-01")
-  },
-  {
-    id: "2",
-    name: "Organic Cotton Textiles",
-    description: "Soft organic cotton textiles with traditional Indian patterns",
-    category: "Textiles",
-    priceRangeMin: 800,
-    priceRangeMax: 2500,
-    dimensions: { length: 200, width: 150, height: 1, unit: "cm" },
-    occasions: ["Wedding", "Diwali", "Christmas"],
-    tags: ["organic", "cotton", "traditional"],
-    imageUrl: "/img/woman-saree.svg",
-    isActive: true,
-    createdAt: new Date("2024-01-01"),
-    updatedAt: new Date("2024-01-01")
-  },
-  {
-    id: "3",
-    name: "Sustainable Wooden Crafts",
-    description: "Eco-friendly wooden crafts made from responsibly sourced materials",
-    category: "Wooden Crafts",
-    priceRangeMin: 1200,
-    priceRangeMax: 3000,
-    dimensions: { length: 25, width: 20, height: 15, unit: "cm" },
-    occasions: ["Housewarming", "Corporate Gifts", "Anniversary"],
-    tags: ["wooden", "sustainable", "handcrafted"],
-    imageUrl: "/img/eco-desk-accessories.svg",
-    isActive: true,
-    createdAt: new Date("2024-01-01"),
-    updatedAt: new Date("2024-01-01")
+    createdAt: new Date("2025-07-19T15:22:43.576Z"),
+    updatedAt: new Date("2025-07-19T15:22:43.576Z")
   }
 ];
 
