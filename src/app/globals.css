@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-trueGray-50: #fafafa;
+  --color-trueGray-100: #f5f5f5;
+  --color-trueGray-200: #e5e5e5;
+  --color-trueGray-300: #d4d4d4;
+  --color-trueGray-400: #a3a3a3;
+  --color-trueGray-500: #737373;
+  --color-trueGray-600: #525252;
+  --color-trueGray-700: #404040;
+  --color-trueGray-800: #262626;
+  --color-trueGray-900: #171717;
+  
+  /* Saavi Brand Colors */
+  --color-saavi-brown: #392616;
+  --color-saavi-gold: #ab8648;
+  --color-saavi-gold-light: #c49d5c;
+  --color-saavi-gold-dark: #8a6d3a;
+  --color-saavi-brown-light: #4a3220;
+  --color-saavi-brown-dark: #2d1f12;
+}
+
+@layer base {
+  html,
+  body {
+    @apply dark:bg-trueGray-900;
+  }
+}
+
+/* Saavi Brand Styling */
+@layer utilities {
+  .text-saavi-brown {
+    color: #392616;
+  }
+  
+  .text-saavi-gold {
+    color: #ab8648;
+  }
+  
+  .bg-saavi-brown {
+    background-color: #392616;
+  }
+  
+  .bg-saavi-gold {
+    background-color: #ab8648;
+  }
+  
+  .bg-saavi-gold-light {
+    background-color: #c49d5c;
+  }
+  
+  .bg-saavi-gold-dark {
+    background-color: #8a6d3a;
+  }
+  
+  .border-saavi-brown {
+    border-color: #392616;
+  }
+  
+  .border-saavi-gold {
+    border-color: #ab8648;
+  }
+  
+  .font-playfair {
+    font-family: var(--font-playfair);
+  }
+  
+  .hover\:bg-saavi-gold-dark:hover {
+    background-color: #8a6d3a;
+  }
+  
+  .hover\:bg-saavi-brown-light:hover {
+    background-color: #4a3220;
+  }
+}
+

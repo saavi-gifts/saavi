@@ -1,0 +1,24 @@
+[
+  {
+    "isActive": true,
+    "dimensions": {
+      "unit": "cm",
+      "length": "3",
+      "width": "4",
+      "height": "5"
+    },
+    "name": "Diya",
+    "category": "Home Decor",
+    "description": "Handmade Diyas",
+    "priceRangeMin": "20",
+    "priceRangeMax": "40",
+    "occasions": [
+      "Diwali",
+      "Corporate Gifts"
+    ],
+    "tags": "handmade",
+    "id": "1752938563576",
+    "createdAt": "2025-07-19T15:22:43.576Z",
+    "updatedAt": "2025-07-19T15:22:43.576Z"
+  }
+]

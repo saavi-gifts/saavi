@@ -1,0 +1,32 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Essential oil bottle -->
+  <rect x="15" y="12" width="8" height="20" rx="1" fill="#8B5CF6" stroke="#7C3AED" stroke-width="1"/>
+  <rect x="17" y="8" width="4" height="6" rx="1" fill="#7C3AED"/>
+  <circle cx="19" cy="8" r="1.5" fill="#5B21B6"/>
+  
+  <!-- Droplets -->
+  <circle cx="19" cy="35" r="1" fill="#8B5CF6" opacity="0.7"/>
+  <circle cx="21" cy="37" r="0.5" fill="#A78BFA" opacity="0.7"/>
+  
+  <!-- Natural soap bar -->
+  <rect x="28" y="18" width="12" height="8" rx="2" fill="#FDE68A" stroke="#F59E0B" stroke-width="1"/>
+  <circle cx="34" cy="22" r="2" fill="none" stroke="#D97706" stroke-width="0.5"/>
+  <circle cx="34" cy="22" r="1" fill="#F59E0B" opacity="0.3"/>
+  
+  <!-- Meditation stone/crystal -->
+  <ellipse cx="8" cy="30" rx="6" ry="8" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="1"/>
+  <ellipse cx="8" cy="30" rx="3" ry="4" fill="#F3F4F6"/>
+  <ellipse cx="8" cy="28" rx="1.5" ry="2" fill="#FFFFFF" opacity="0.8"/>
+  
+  <!-- Aromatherapy swirls -->
+  <path d="M25 8 Q23 6 25 4 Q27 2 25 0" stroke="#8B5CF6" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M35 10 Q37 8 35 6 Q33 4 35 2" stroke="#FDE68A" stroke-width="1.5" fill="none" opacity="0.6"/>
+  
+  <!-- Healing herbs -->
+  <path d="M2 15 Q4 12 6 15 Q4 18 2 15" fill="#10B981"/>
+  <path d="M42 35 Q44 32 46 35 Q44 38 42 35" fill="#059669"/>
+  
+  <!-- Natural elements -->
+  <circle cx="40" cy="8" r="2" fill="#34D399" opacity="0.5"/>
+  <circle cx="5" cy="42" r="1.5" fill="#6EE7B7" opacity="0.5"/>
+</svg>

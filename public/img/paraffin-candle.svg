@@ -1,0 +1,37 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Candle base -->
+  <rect x="30" y="30" width="20" height="40" rx="2" fill="#F3F4F6" stroke="#DC2626" stroke-width="2"/>
+  
+  <!-- Wick -->
+  <line x1="40" y1="30" x2="40" y2="20" stroke="#374151" stroke-width="2"/>
+  
+  <!-- Flame -->
+  <ellipse cx="40" cy="18" rx="4" ry="8" fill="#EF4444" opacity="0.8"/>
+  <ellipse cx="40" cy="16" rx="3" ry="6" fill="#F59E0B" opacity="0.9"/>
+  <ellipse cx="40" cy="15" rx="2" ry="4" fill="#FCD34D"/>
+  
+  <!-- Smoke with toxins -->
+  <path d="M40 10 Q38 8 40 6 Q42 4 40 2" stroke="#6B7280" stroke-width="2" fill="none" opacity="0.7"/>
+  <path d="M42 8 Q44 6 42 4 Q40 2 42 0" stroke="#6B7280" stroke-width="1.5" fill="none" opacity="0.5"/>
+  
+  <!-- Dripping wax -->
+  <path d="M28 45 Q25 47 28 50" fill="#F3F4F6"/>
+  <path d="M52 40 Q55 42 52 45" fill="#F3F4F6"/>
+  
+  <!-- Warning symbol -->
+  <circle cx="20" cy="20" r="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/>
+  <text x="20" y="24" text-anchor="middle" font-family="Arial" font-size="12" fill="#DC2626" font-weight="bold">!</text>
+  
+  <!-- Toxic particles -->
+  <circle cx="15" cy="50" r="2" fill="#DC2626" opacity="0.6"/>
+  <circle cx="12" cy="55" r="1.5" fill="#EF4444" opacity="0.6"/>
+  <circle cx="18" cy="58" r="1" fill="#F87171" opacity="0.6"/>
+  
+  <circle cx="65" cy="45" r="2" fill="#DC2626" opacity="0.6"/>
+  <circle cx="68" cy="52" r="1.5" fill="#EF4444" opacity="0.6"/>
+  <circle cx="62" cy="54" r="1" fill="#F87171" opacity="0.6"/>
+  
+  <!-- Petroleum symbol -->
+  <rect x="32" y="50" width="16" height="8" rx="1" fill="#374151" opacity="0.3"/>
+  <text x="40" y="56" text-anchor="middle" font-family="Arial" font-size="6" fill="#DC2626">OIL</text>
+</svg>

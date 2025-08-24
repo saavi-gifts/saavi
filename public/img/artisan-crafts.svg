@@ -1,0 +1,65 @@
+<svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="140" cy="140" r="120" fill="#F5F5F5" stroke="#AB8648" stroke-width="2"/>
+  
+  <!-- Pottery wheel -->
+  <ellipse cx="110" cy="160" rx="25" ry="8" fill="#8A6D3A"/>
+  <rect x="100" y="140" width="20" height="25" rx="3" fill="#392616"/>
+  <ellipse cx="110" cy="140" rx="12" ry="4" fill="#AB8648"/>
+  
+  <!-- Weaving loom -->
+  <rect x="150" y="120" width="40" height="30" rx="2" fill="#392616"/>
+  <line x1="155" y1="125" x2="185" y2="125" stroke="#AB8648" stroke-width="1"/>
+  <line x1="155" y1="130" x2="185" y2="130" stroke="#C49D5C" stroke-width="1"/>
+  <line x1="155" y1="135" x2="185" y2="135" stroke="#AB8648" stroke-width="1"/>
+  <line x1="155" y1="140" x2="185" y2="140" stroke="#C49D5C" stroke-width="1"/>
+  <line x1="155" y1="145" x2="185" y2="145" stroke="#AB8648" stroke-width="1"/>
+  
+  <!-- Traditional diyas -->
+  <ellipse cx="90" cy="110" rx="8" ry="3" fill="#AB8648"/>
+  <path d="M82 110 C82 105, 86 103, 90 103 C94 103, 98 105, 98 110" fill="#392616"/>
+  <circle cx="90" cy="106" r="1" fill="#FFD700"/>
+  
+  <ellipse cx="200" cy="110" rx="8" ry="3" fill="#AB8648"/>
+  <path d="M192 110 C192 105, 196 103, 200 103 C204 103, 208 105, 208 110" fill="#392616"/>
+  <circle cx="200" cy="106" r="1" fill="#FFD700"/>
+  
+  <!-- Jewelry elements -->
+  <circle cx="140" cy="90" r="12" fill="#AB8648"/>
+  <circle cx="140" cy="90" r="8" fill="#C49D5C"/>
+  <circle cx="140" cy="90" r="4" fill="#FFD700"/>
+  
+  <!-- Traditional patterns around the border -->
+  <path d="M140 30 L145 40 L155 35 L150 45 L160 40 L155 50" stroke="#AB8648" stroke-width="2" fill="none"/>
+  <path d="M250 140 L240 145 L245 155 L235 150 L240 160 L230 155" stroke="#AB8648" stroke-width="2" fill="none"/>
+  <path d="M140 250 L135 240 L125 245 L130 235 L120 240 L125 230" stroke="#AB8648" stroke-width="2" fill="none"/>
+  <path d="M30 140 L40 135 L35 125 L45 130 L40 120 L50 125" stroke="#AB8648" stroke-width="2" fill="none"/>
+  
+  <!-- Artisan hands working -->
+  <path d="M120 180 C125 175, 135 175, 140 180 C145 185, 145 195, 140 200 C135 205, 125 205, 120 200 C115 195, 115 185, 120 180 Z" fill="#D4A574"/>
+  <path d="M150 180 C155 175, 165 175, 170 180 C175 185, 175 195, 170 200 C165 205, 155 205, 150 200 C145 195, 145 185, 150 180 Z" fill="#D4A574"/>
+  
+  <!-- Small decorative elements -->
+  <circle cx="70" cy="80" r="3" fill="#C49D5C"/>
+  <circle cx="210" cy="80" r="3" fill="#C49D5C"/>
+  <circle cx="70" cy="200" r="3" fill="#C49D5C"/>
+  <circle cx="210" cy="200" r="3" fill="#C49D5C"/>
+  
+  <!-- Traditional tools -->
+  <line x1="180" y1="170" x2="200" y2="185" stroke="#392616" stroke-width="3"/>
+  <circle cx="202" cy="187" r="3" fill="#AB8648"/>
+  
+  <line x1="80" y1="170" x2="100" y2="185" stroke="#392616" stroke-width="3"/>
+  <circle cx="78" cy="168" r="3" fill="#AB8648"/>
+  
+  <!-- Center mandala pattern -->
+  <circle cx="140" cy="140" r="15" fill="none" stroke="#AB8648" stroke-width="1"/>
+  <circle cx="140" cy="140" r="10" fill="none" stroke="#C49D5C" stroke-width="1"/>
+  <circle cx="140" cy="140" r="5" fill="#AB8648"/>
+  
+  <!-- Decorative dots -->
+  <circle cx="140" cy="125" r="2" fill="#392616"/>
+  <circle cx="140" cy="155" r="2" fill="#392616"/>
+  <circle cx="125" cy="140" r="2" fill="#392616"/>
+  <circle cx="155" cy="140" r="2" fill="#392616"/>
+</svg>
