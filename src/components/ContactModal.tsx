@@ -206,13 +206,11 @@ ${data.name}`;
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Budget Range *
+                    Budget Range
                   </label>
                   <select
-                    {...register("budget", { required: "Please select budget range" })}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-saavi-gold focus:border-saavi-gold dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-                      errors.budget ? "border-red-500" : "border-gray-300"
-                    }`}
+                    {...register("budget")}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saavi-gold focus:border-saavi-gold dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   >
                     <option value="">Select budget range</option>
                     <option value="₹1,000 - ₹2,500">₹1,000 - ₹2,500</option>
@@ -222,28 +220,20 @@ ${data.name}`;
                     <option value="₹25,000+">₹25,000+</option>
                     <option value="Custom Quote">Custom Quote</option>
                   </select>
-                  {errors.budget && (
-                    <p className="mt-1 text-sm text-red-500">{errors.budget.message}</p>
-                  )}
                 </div>
               </div>
 
               {/* Message */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Tell us more about your requirements *
+                  Tell us more about your requirements
                 </label>
                 <textarea
-                  {...register("message", { required: "Please tell us about your requirements" })}
+                  {...register("message")}
                   rows={4}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-saavi-gold focus:border-saavi-gold dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-                    errors.message ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saavi-gold focus:border-saavi-gold dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Describe your gift requirements, occasion, quantity, or any specific customization needs..."
                 />
-                {errors.message && (
-                  <p className="mt-1 text-sm text-red-500">{errors.message.message}</p>
-                )}
               </div>
 
               {/* Submit Button */}

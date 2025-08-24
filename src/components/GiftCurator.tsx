@@ -8,6 +8,8 @@ interface CurationForm {
   recipient: string;
   preferences: string;
   customMessage: string;
+  email: string;
+  contactNumber: string;
 }
 
 const occasions = [
@@ -48,16 +50,47 @@ export const GiftCurator = () => {
     budget: "",
     recipient: "",
     preferences: "",
-    customMessage: ""
+    customMessage: "",
+    email: "",
+    contactNumber: ""
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log("Curation request:", formData);
-    setIsSubmitted(true);
+    
+    try {
+      // Prepare email content
+      const subject = "Gift Curation Request - Saavi";
+      const body = `Hi Saavi Team,
+
+I'm interested in getting help with gift curation. Here are my details:
+
+Occasion: ${formData.occasion}
+Budget Range: ${formData.budget}
+Recipient: ${formData.recipient}
+Preferences: ${formData.preferences}
+Special Requirements: ${formData.customMessage}
+Email: ${formData.email}
+Contact Number: ${formData.contactNumber || 'Not provided'}
+
+Please get back to me with personalized recommendations.
+
+Best regards,
+${formData.email}`;
+
+      // For now, we'll use mailto as a fallback since we removed API routes
+      // In a real implementation, you would send this to your backend
+      const mailtoLink = `mailto:saavi.gifts@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(mailtoLink);
+      
+      // Show success message
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting your request. Please try again.');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -76,18 +109,22 @@ export const GiftCurator = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h3 className="text-2xl font-bold text-green-800 dark:text-green-200 mb-2 font-playfair">
-              Curation Request Submitted!
+              Thank you for contacting us! 🎉
             </h3>
             <p className="text-green-700 dark:text-green-300 mb-4">
-              Thank you for your request. Our gift curators will review your preferences and 
-              get back to you within 24 hours with personalized recommendations.
+              We&apos;re excited to help you find the perfect handcrafted gifts! Our expert curators 
+              are already reviewing your preferences and will create a personalized selection just for you.
             </p>
-            <p className="text-sm text-green-600 dark:text-green-400">
-              You will receive an email with curated gift options, pricing details, and next steps.
+            <p className="text-green-700 dark:text-green-300 mb-4">
+              We&apos;ve opened your email client with all the details. Please send the email to complete 
+              your request, and we&apos;ll get back to you within 24 hours with amazing gift recommendations.
+            </p>
+            <p className="text-sm text-green-600 dark:text-green-400 mb-6">
+              Get ready to discover unique treasures that will create lasting memories! ✨
             </p>
             <button 
               onClick={() => setIsSubmitted(false)}
-              className="mt-4 bg-saavi-gold hover:bg-saavi-gold-dark text-white font-medium py-2 px-6 rounded"
+              className="mt-4 bg-saavi-gold hover:bg-yellow-600 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200"
             >
               Create Another Curation
             </button>
@@ -181,6 +218,40 @@ export const GiftCurator = () => {
             </div>
           </div>
 
+          {/* Contact Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Email Address *
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder="your@email.com"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-saavi-gold dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+
+            {/* Contact Number */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Contact Number
+              </label>
+              <input
+                type="tel"
+                name="contactNumber"
+                value={formData.contactNumber}
+                onChange={handleChange}
+                placeholder="+91 98765 43210"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-saavi-gold dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+          </div>
+
           {/* Custom Message */}
           <div className="mt-6">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -199,28 +270,8 @@ export const GiftCurator = () => {
           {/* Submit Button */}
           <div className="mt-8 text-center">
             <button
-              type="button"
-              onClick={() => {
-                const subject = "Enquiry";
-                const body = `Hi Saavi Team,
-
-I'm interested in getting help with gift curation. Here are my details:
-
-Occasion: ${formData.occasion}
-Budget Range: ${formData.budget}
-Recipient: ${formData.recipient}
-Preferences: ${formData.preferences}
-Special Requirements: ${formData.customMessage}
-
-Please get back to me with personalized recommendations.
-
-Best regards,
-[Your Name]`;
-
-                const mailtoLink = `mailto:saavi.gifts@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                window.open(mailtoLink);
-              }}
-              className="bg-saavi-gold hover:bg-saavi-gold-dark text-white font-medium py-4 px-8 rounded-lg transition-colors duration-200"
+              type="submit"
+              className="bg-saavi-gold hover:bg-yellow-600 text-white font-medium py-4 px-8 rounded-lg transition-colors duration-200"
             >
               Let us help you
             </button>
