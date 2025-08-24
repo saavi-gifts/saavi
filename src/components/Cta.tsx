@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Container } from "@/components/Container";
 
@@ -14,12 +15,18 @@ export const Cta = () => {
           </p>
         </div>
         <div className="flex-shrink-0 w-full text-center lg:w-auto">
-          <a
-            href="#custom"
-            className="inline-block py-3 mx-auto text-lg font-medium text-center text-saavi-brown bg-white hover:bg-gray-100 rounded-md px-7 lg:px-10 lg:py-5 "
+          <button
+            onClick={() => {
+              // Trigger the contact form popup
+              const contactButton = document.querySelector('[data-contact-trigger]') as HTMLElement;
+              if (contactButton) {
+                contactButton.click();
+              }
+            }}
+            className="inline-block py-3 mx-auto text-lg font-medium text-center text-saavi-brown bg-white hover:bg-gray-100 rounded-md px-7 lg:px-10 lg:py-5 cursor-pointer"
           >
-            Start Your Curation
-          </a>
+            Let&apos;s discuss
+          </button>
         </div>
       </div>
     </Container>
