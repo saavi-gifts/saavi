@@ -10,19 +10,20 @@ This guide explains how to deploy the Saavi website to GitHub Pages using the su
 
 ## DNS Configuration on GoDaddy
 
-### 1. Set up saavi.tuvisminds.com
+### 1. Set up saavi.tuvisminds.com (Recommended)
 1. Log into GoDaddy and go to DNS Management for `tuvisminds.com`
-2. Add A record:
-   - **Type**: A
+2. Add CNAME record:
+   - **Type**: CNAME
    - **Name**: `saavi`
-   - **Value**: `185.199.108.153` (GitHub Pages IP)
+   - **Value**: `saavi-gifts.github.io`
    - **TTL**: 600
 
-### 2. Alternative: CNAME Record
-- **Type**: CNAME
+### 2. Alternative: A Record (Not Recommended)
+- **Type**: A
 - **Name**: `saavi`
-- **Value**: `saavi-gifts.github.io`
+- **Value**: `185.199.108.153` (GitHub Pages IP)
 - **TTL**: 600
+- **Note**: IP addresses can change, requiring manual DNS updates
 
 ## Multiple Subdomains with Wildcard Certificate
 
@@ -37,13 +38,13 @@ Your wildcard certificate `*.tuvisminds.com` automatically covers ALL subdomains
 
 ### DNS Records for Additional Subdomains:
 ```
-Type: A
+Type: CNAME
 Name: admin
-Value: 185.199.108.153
+Value: saavi-gifts.github.io
 
-Type: A
+Type: CNAME
 Name: blog  
-Value: 185.199.108.153
+Value: saavi-gifts.github.io
 ```
 
 ## GitHub Pages Setup
