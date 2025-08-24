@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { sendEmail, EmailData } from "@/lib/emailConfig";
 
 interface ContactFormData {
   name: string;
@@ -31,34 +32,28 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   const onSubmit = async (data: ContactFormData) => {
     try {
-      // For now, we'll use mailto as a fallback since we removed API routes
-      const subject = "Sales Inquiry - Saavi";
-      const body = `Hi Saavi Team,
-
-I'm interested in your products/services. Here are my details:
-
-Name: ${data.name}
-Email: ${data.email}
-Phone: ${data.phone}
-Company: ${data.company || 'N/A'}
-Inquiry Type: ${data.inquiryType}
-Budget Range: ${data.budget}
-Message: ${data.message}
-
-Please get back to me with more information.
-
-Best regards,
-${data.name}`;
-
-      const mailtoLink = `mailto:saavi.gifts@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.open(mailtoLink);
+      // Send email using our email configuration
+      const emailSent = await sendEmail(data);
       
+      if (emailSent) {
+        // Email was sent successfully via EmailJS or Web3Forms
+        console.log('Email sent successfully!');
+      } else {
+        // Fallback to mailto was used
+        console.log('Email sent via fallback method');
+      }
+      
+      // Show success message
       setIsSuccess(true);
+      
+      // Auto-close after 5 seconds
       setTimeout(() => {
         handleClose();
-      }, 3000);
+      }, 5000);
+      
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error sending email:', error);
+      alert('There was an error sending your inquiry. Please try again or contact us directly.');
     }
   };
 
@@ -266,11 +261,22 @@ ${data.name}`;
                 </svg>
               </div>
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                Thank you for your inquiry!
+                Thank you for your inquiry! 🎉
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                We&apos;ve opened your email client. Please review and send the email to complete your inquiry.
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Your inquiry has been sent successfully to our team.
               </p>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                We&apos;ll review your requirements and get back to you within 24 hours with personalized recommendations.
+              </p>
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  <strong>What happens next?</strong><br />
+                  • Our team will review your inquiry<br />
+                  • We&apos;ll prepare personalized gift recommendations<br />
+                  • You&apos;ll receive a detailed response within 24 hours
+                </p>
+              </div>
               <button
                 onClick={handleClose}
                 className="bg-saavi-gold hover:bg-yellow-600 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200"
