@@ -5,7 +5,7 @@ import "./globals.css";
 
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { PopupWidget }  from "@/components/PopupWidget";
+import { ContactModalProvider } from "@/components/ContactModalProvider";
 import { AuthProvider } from "@/components/AuthProvider";
 
 
@@ -36,10 +36,11 @@ export default function RootLayout({
       <body className={`${inter.className} ${playfair.variable}`}>
         <AuthProvider>
           <ThemeProvider attribute="class">
-            <Navbar />
-            <div>{children}</div>
-            <Footer />
-            <PopupWidget />
+            <ContactModalProvider>
+              <Navbar />
+              <div>{children}</div>
+              <Footer />
+            </ContactModalProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>

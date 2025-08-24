@@ -1,8 +1,11 @@
 "use client";
 import React from "react";
 import { Container } from "@/components/Container";
+import { useContactModal } from "./ContactModalProvider";
 
 export const Cta = () => {
+  const { openContactModal } = useContactModal();
+  
   return (
     <Container>
       <div className="flex flex-wrap items-center justify-between w-full max-w-4xl gap-5 mx-auto text-white bg-saavi-brown px-7 py-7 lg:px-12 lg:py-12 lg:flex-nowrap rounded-xl">
@@ -16,14 +19,8 @@ export const Cta = () => {
         </div>
         <div className="flex-shrink-0 w-full text-center lg:w-auto">
           <button
-            onClick={() => {
-              // Trigger the contact form popup
-              const contactButton = document.querySelector('[data-contact-trigger]') as HTMLElement;
-              if (contactButton) {
-                contactButton.click();
-              }
-            }}
-            className="inline-block py-3 mx-auto text-lg font-medium text-center text-saavi-brown bg-white hover:bg-gray-100 rounded-md px-7 lg:px-10 lg:py-5 cursor-pointer"
+            onClick={openContactModal}
+            className="inline-block py-3 mx-auto text-lg font-medium text-center text-saavi-brown bg-white hover:bg-gray-100 rounded-md px-7 lg:px-10 lg:py-5 cursor-pointer transition-colors duration-200"
           >
             Let&apos;s discuss
           </button>
