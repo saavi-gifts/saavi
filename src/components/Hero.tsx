@@ -19,13 +19,13 @@ export const Hero = () => {
 
             <div className="flex flex-col items-start space-y-3 sm:space-x-4 sm:space-y-0 sm:items-center sm:flex-row">
               <a
-                href="#gifts"
+                href="/catalog"
                 className="px-8 py-4 text-lg font-medium text-center text-white bg-saavi-gold hover:bg-saavi-gold-dark rounded-md ">
                 Explore Gifts
               </a>
               <a
-                href="#custom"
-                className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
+                href="#custom-solutions"
+                className="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-saavi-gold transition-colors duration-200">
                 <svg
                   className="w-5 h-5"
                   fill="none"

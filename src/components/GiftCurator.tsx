@@ -199,10 +199,30 @@ export const GiftCurator = () => {
           {/* Submit Button */}
           <div className="mt-8 text-center">
             <button
-              type="submit"
+              type="button"
+              onClick={() => {
+                const subject = "Enquiry";
+                const body = `Hi Saavi Team,
+
+I'm interested in getting help with gift curation. Here are my details:
+
+Occasion: ${formData.occasion}
+Budget Range: ${formData.budget}
+Recipient: ${formData.recipient}
+Preferences: ${formData.preferences}
+Special Requirements: ${formData.customMessage}
+
+Please get back to me with personalized recommendations.
+
+Best regards,
+[Your Name]`;
+
+                const mailtoLink = `mailto:saavi.gifts@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                window.open(mailtoLink);
+              }}
               className="bg-saavi-gold hover:bg-saavi-gold-dark text-white font-medium py-4 px-8 rounded-lg transition-colors duration-200"
             >
-              Create My Curated Gift Collection
+              Let us help you
             </button>
           </div>
 

@@ -19,6 +19,11 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Saavi - Sustainable Gifts, Empowered Communities",
   description: "Handcrafted eco-friendly products made by skilled women artisans and rural communities. Supporting sustainable livelihoods while preserving traditional Indian craftsmanship.",
+  icons: {
+    icon: '/img/logo1.svg',
+    shortcut: '/img/logo1.svg',
+    apple: '/img/logo1.svg',
+  },
 };
 
 export default function RootLayout({

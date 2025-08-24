@@ -100,7 +100,7 @@ export default function Home() {
           </div>
 
           {/* Custom Solutions Section */}
-          <div className="flex flex-col">
+          <div id="custom-solutions" className="flex flex-col">
             <div className="mb-4">
               <p className="text-sm font-semibold tracking-wider text-saavi-gold uppercase">
                 Custom Solutions
