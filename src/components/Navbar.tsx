@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import ThemeChanger from "./DarkSwitch";
 import Image from "next/image"
 import { Disclosure } from "@headlessui/react";
@@ -7,6 +8,7 @@ import { useContactModal } from "./ContactModalProvider";
 
 export const Navbar = () => {
   const { openContactModal } = useContactModal();
+  const pathname = usePathname();
   
   const navigation = [
     { name: "Who are we?", href: "/" },
@@ -14,6 +16,13 @@ export const Navbar = () => {
     { name: "Corporate", href: "/corporate" },
     { name: "Leadership", href: "/leadership" },
   ];
+
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <div className="w-full">
@@ -71,8 +80,16 @@ export const Navbar = () => {
                 <Disclosure.Panel className="flex flex-wrap w-full my-5 lg:hidden">
                   <div>
                     {navigation.map((item, index) => (
-                      <Link key={index} href={item.href} className="w-full px-4 py-2 -ml-4 text-gray-500 rounded-md dark:text-gray-300 hover:text-saavi-gold focus:text-white focus:bg-saavi-gold focus:bg-opacity-90 dark:focus:bg-gray-800 focus:outline-none">
-                          {item.name}
+                      <Link 
+                        key={index} 
+                        href={item.href} 
+                        className={`w-full px-4 py-2 -ml-4 rounded-md transition-colors duration-200 ${
+                          isActive(item.href)
+                            ? 'text-white bg-saavi-gold bg-opacity-90 font-medium'
+                            : 'text-gray-500 dark:text-gray-300 hover:text-saavi-gold focus:text-white focus:bg-saavi-gold focus:bg-opacity-90 dark:focus:bg-gray-800 focus:outline-none'
+                        }`}
+                      >
+                        {item.name}
                       </Link>
                     ))}
                     <button
@@ -92,8 +109,15 @@ export const Navbar = () => {
           <ul className="items-center justify-end flex-1 pt-6 list-none lg:pt-0 lg:flex">
             {navigation.map((menu, index) => (
               <li className="mr-3 nav__item" key={index}>
-                <Link href={menu.href} className="inline-block px-4 py-2 text-lg font-normal text-gray-800 no-underline rounded-md dark:text-gray-200 hover:text-saavi-gold focus:text-white focus:bg-saavi-gold focus:bg-opacity-90 focus:outline-none dark:focus:bg-gray-800">
-                    {menu.name}
+                <Link 
+                  href={menu.href} 
+                  className={`inline-block px-4 py-2 text-lg font-normal rounded-md transition-colors duration-200 ${
+                    isActive(menu.href)
+                      ? 'text-white bg-saavi-gold bg-opacity-90 font-medium'
+                      : 'text-gray-800 dark:text-gray-200 hover:text-saavi-gold focus:text-white focus:bg-saavi-gold focus:bg-opacity-90 focus:outline-none dark:focus:bg-gray-800'
+                  }`}
+                >
+                  {menu.name}
                 </Link>
               </li>
             ))}
