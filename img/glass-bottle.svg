@@ -1,0 +1,44 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Glass bottle body with gradient -->
+  <defs>
+    <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#059669;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:0.3" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main bottle -->
+  <path d="M25 25 L25 65 Q25 70 30 70 L50 70 Q55 70 55 65 L55 25 Z" fill="url(#glassGradient)" stroke="#059669" stroke-width="2"/>
+  
+  <!-- Bottle neck -->
+  <rect x="32" y="15" width="16" height="15" rx="2" fill="url(#glassGradient)" stroke="#059669" stroke-width="2"/>
+  
+  <!-- Cork stopper -->
+  <rect x="30" y="10" width="20" height="8" rx="3" fill="#92400E" stroke="#78350F" stroke-width="1"/>
+  
+  <!-- Glass shine effect -->
+  <path d="M30 20 L30 60 Q30 62 32 62 L35 62" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.7"/>
+  
+  <!-- Artisan pattern -->
+  <circle cx="40" cy="45" r="8" fill="none" stroke="#AB8648" stroke-width="1" opacity="0.8"/>
+  <circle cx="40" cy="45" r="4" fill="none" stroke="#AB8648" stroke-width="1" opacity="0.8"/>
+  <circle cx="40" cy="45" r="2" fill="#AB8648" opacity="0.8"/>
+  
+  <!-- Green leaves indicating eco-friendly -->
+  <path d="M60 20 Q65 15 70 20 Q65 25 60 20" fill="#10B981"/>
+  <path d="M62 18 Q67 13 72 18 Q67 23 62 18" fill="#059669"/>
+  
+  <!-- Positive indicators -->
+  <circle cx="20" cy="20" r="8" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <path d="M16 20 L19 23 L24 17" stroke="#10B981" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Natural elements -->
+  <circle cx="15" cy="60" r="2" fill="#10B981" opacity="0.6"/>
+  <circle cx="12" cy="65" r="1.5" fill="#059669" opacity="0.6"/>
+  <circle cx="18" cy="67" r="1" fill="#047857" opacity="0.6"/>
+  
+  <circle cx="65" cy="55" r="2" fill="#10B981" opacity="0.6"/>
+  <circle cx="68" cy="62" r="1.5" fill="#059669" opacity="0.6"/>
+  <circle cx="62" cy="64" r="1" fill="#047857" opacity="0.6"/>
+</svg>

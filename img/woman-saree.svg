@@ -1,0 +1,80 @@
+<svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="300" cy="300" r="280" fill="#f8f4f0" stroke="#ab8648" stroke-width="2"/>
+  
+  <!-- Woman's silhouette -->
+  <g transform="translate(150, 80)">
+    <!-- Head -->
+    <circle cx="150" cy="80" r="35" fill="#d4a574"/>
+    
+    <!-- Hair -->
+    <path d="M115 75 Q120 45 150 45 Q180 45 185 75 Q180 55 150 55 Q120 55 115 75" fill="#2d1f12"/>
+    
+    <!-- Saree draping -->
+    <!-- Main body -->
+    <path d="M120 115 Q140 110 150 115 Q160 110 180 115 L175 280 Q175 300 170 320 L130 320 Q125 300 125 280 Z" fill="#ab8648"/>
+    
+    <!-- Saree pleats -->
+    <path d="M125 280 L130 320 L135 280 L140 320 L145 280 L150 320 L155 280 L160 320 L165 280 L170 320" stroke="#8a6d3a" stroke-width="2" fill="none"/>
+    
+    <!-- Saree border -->
+    <path d="M125 280 L175 280" stroke="#392616" stroke-width="3"/>
+    <path d="M130 320 L170 320" stroke="#392616" stroke-width="3"/>
+    
+    <!-- Blouse -->
+    <path d="M130 115 Q140 110 150 115 Q160 110 170 115 L165 180 Q160 185 150 185 Q140 185 135 180 Z" fill="#c49d5c"/>
+    
+    <!-- Arms -->
+    <ellipse cx="120" cy="150" rx="12" ry="25" fill="#d4a574"/>
+    <ellipse cx="180" cy="150" rx="12" ry="25" fill="#d4a574"/>
+    
+    <!-- Hands working on craft -->
+    <circle cx="110" cy="175" r="8" fill="#d4a574"/>
+    <circle cx="190" cy="175" r="8" fill="#d4a574"/>
+    
+    <!-- Craft items -->
+    <rect x="135" y="200" width="30" height="20" rx="5" fill="#8a6d3a"/>
+    <circle cx="150" cy="225" r="8" fill="#ab8648"/>
+    <circle cx="140" cy="240" r="6" fill="#c49d5c"/>
+    <circle cx="160" cy="240" r="6" fill="#c49d5c"/>
+    
+    <!-- Decorative elements -->
+    <circle cx="100" cy="120" r="3" fill="#ab8648"/>
+    <circle cx="200" cy="120" r="3" fill="#ab8648"/>
+    <circle cx="95" cy="140" r="2" fill="#c49d5c"/>
+    <circle cx="205" cy="140" r="2" fill="#c49d5c"/>
+    
+    <!-- Traditional jewelry -->
+    <circle cx="150" cy="95" r="2" fill="#ab8648"/>
+    <ellipse cx="140" cy="100" rx="3" ry="1" fill="#ab8648"/>
+    <ellipse cx="160" cy="100" rx="3" ry="1" fill="#ab8648"/>
+  </g>
+  
+  <!-- Decorative border pattern -->
+  <circle cx="50" cy="100" r="4" fill="#ab8648"/>
+  <circle cx="550" cy="100" r="4" fill="#ab8648"/>
+  <circle cx="50" cy="500" r="4" fill="#ab8648"/>
+  <circle cx="550" cy="500" r="4" fill="#ab8648"/>
+  
+  <!-- Traditional motifs -->
+  <g transform="translate(450, 200)">
+    <path d="M0 0 Q10 5 20 0 Q15 10 10 20 Q5 10 0 0" fill="#ab8648" opacity="0.3"/>
+  </g>
+  
+  <g transform="translate(100, 450)">
+    <path d="M0 0 Q10 5 20 0 Q15 10 10 20 Q5 10 0 0" fill="#ab8648" opacity="0.3"/>
+  </g>
+  
+  <!-- Craft tools -->
+  <g transform="translate(80, 300)">
+    <rect x="0" y="0" width="30" height="4" rx="2" fill="#8a6d3a"/>
+    <rect x="0" y="8" width="25" height="4" rx="2" fill="#8a6d3a"/>
+    <rect x="0" y="16" width="35" height="4" rx="2" fill="#8a6d3a"/>
+  </g>
+  
+  <g transform="translate(480, 350)">
+    <circle cx="0" cy="0" r="8" fill="#ab8648"/>
+    <circle cx="15" cy="0" r="6" fill="#c49d5c"/>
+    <circle cx="0" cy="15" r="6" fill="#c49d5c"/>
+  </g>
+</svg>
