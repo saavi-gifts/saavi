@@ -1,90 +1,98 @@
-# GitHub Pages Deployment Guide
+# Saavi Website Deployment Guide
 
 ## Overview
-This Next.js application has been configured for static export and deployment to GitHub Pages.
+This guide explains how to deploy the Saavi website to GitHub Pages using the subdomain `saavi.tuvisminds.com`.
 
-## What's Been Configured
+## Domain Configuration
+- **Main Domain**: `tuvisminds.com`
+- **Subdomain**: `saavi.tuvisminds.com`
+- **Wildcard Certificate**: `*.tuvisminds.com` (covers all subdomains)
 
-### 1. Next.js Configuration
-- `output: 'export'` enabled in `next.config.js`
-- Static export generates files in the `out/` directory
-- All pages are pre-rendered as static HTML
+## DNS Configuration on GoDaddy
 
-### 2. GitHub Actions Workflow
-- Automatic build and deployment on push to main/master branch
-- Uses `peaceiris/actions-gh-pages@v3` action
-- Publishes from `./out` directory
-- Custom domain: `tuvisminds.com`
+### 1. Set up saavi.tuvisminds.com
+1. Log into GoDaddy and go to DNS Management for `tuvisminds.com`
+2. Add A record:
+   - **Type**: A
+   - **Name**: `saavi`
+   - **Value**: `185.199.108.153` (GitHub Pages IP)
+   - **TTL**: 600
 
-### 3. Static Data
-- API routes removed for static export compatibility
-- Sample gift data included in `CatalogGrid` component
-- Image upload functionality uses local file previews
+### 2. Alternative: CNAME Record
+- **Type**: CNAME
+- **Name**: `saavi`
+- **Value**: `saavi-gifts.github.io`
+- **TTL**: 600
 
-## Deployment Steps
+## Multiple Subdomains with Wildcard Certificate
 
-### 1. Push to GitHub
-```bash
-git add .
-git commit -m "Configure for GitHub Pages deployment"
-git push origin main
+Your wildcard certificate `*.tuvisminds.com` automatically covers ALL subdomains. You can create additional subdomains without additional SSL certificates:
+
+### Example Subdomains:
+- `admin.tuvisminds.com` - Admin panel
+- `api.tuvisminds.com` - API endpoints  
+- `blog.tuvisminds.com` - Blog section
+- `shop.tuvisminds.com` - E-commerce
+- `support.tuvisminds.com` - Customer support
+
+### DNS Records for Additional Subdomains:
+```
+Type: A
+Name: admin
+Value: 185.199.108.153
+
+Type: A
+Name: blog  
+Value: 185.199.108.153
 ```
 
-### 2. Enable GitHub Pages
-1. Go to your repository settings
-2. Navigate to "Pages" section
-3. Set source to "GitHub Actions"
-4. Ensure custom domain is set to `tuvisminds.com`
+## GitHub Pages Setup
 
-### 3. DNS Configuration
-Add these DNS records at your domain registrar:
-```
-Type: CNAME
-Name: @
-Value: your-username.github.io
+1. **Repository**: [https://github.com/saavi-gifts/saavi](https://github.com/saavi-gifts/saavi)
+2. **Go to Settings** → **Pages**
+3. **Source**: Select "GitHub Actions"
+4. **Custom domain**: `saavi.tuvisminds.com`
 
-Type: CNAME  
-Name: www
-Value: your-username.github.io
-```
+## Deployment Process
 
-## Build Commands
+The GitHub Actions workflow automatically:
+1. Builds the static export
+2. Deploys to GitHub Pages
+3. Configures the custom domain `saavi.tuvisminds.com`
 
-### Local Development
-```bash
-npm run dev
-```
+## SSL Certificate
 
-### Build for Production
-```bash
-npm run build
-```
-
-### Build for GitHub Pages
-```bash
-npm run build:gh-pages
-```
-
-## File Structure After Build
-```
-out/
-├── index.html          # Home page
-├── admin/             # Admin pages
-├── catalog/           # Catalog page
-├── corporate/         # Corporate page
-├── leadership/        # Leadership page
-├── _next/            # Next.js assets
-├── img/              # Images
-└── CNAME             # Custom domain
-```
-
-## Notes
-- The application is now fully static and compatible with GitHub Pages
-- Authentication features are disabled for static export
-- All functionality works with client-side JavaScript
-- Images are served from the `public/img/` directory
+- **Provider**: Let's Encrypt
+- **Type**: Wildcard certificate for `*.tuvisminds.com`
+- **Auto-renewal**: Configured via acme.sh
+- **Coverage**: All subdomains automatically secured
 
 ## Troubleshooting
-- If build fails, check for any remaining API calls
-- Ensure all components use static data or client-side functionality
+
+### DNS Propagation
+- DNS changes can take up to 48 hours to propagate globally
+- Use tools like `dig` or [whatsmydns.net](https://whatsmydns.net) to check propagation
+
+### SSL Issues
+- Wildcard certificates automatically secure all subdomains
+- No additional SSL configuration needed for new subdomains
+
+### GitHub Pages Issues
+- Check Actions tab for build/deployment status
 - Verify CNAME file is present in the `out/` directory
+- Ensure custom domain is configured in repository settings
+
+## Next Steps
+
+1. **Wait for DNS propagation** (usually 15 minutes to 2 hours)
+2. **Verify GitHub Actions deployment** in the Actions tab
+3. **Test your site** at `saavi.tuvisminds.com`
+4. **Add more subdomains** as needed (they'll automatically be SSL-secured)
+
+## Benefits of Subdomain Approach
+
+- **Scalability**: Easy to add new sections/services
+- **SSL Security**: All subdomains automatically secured
+- **Organization**: Clear separation of concerns
+- **Cost-effective**: Single wildcard certificate covers everything
+- **Flexibility**: Each subdomain can point to different services
