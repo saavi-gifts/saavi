@@ -427,21 +427,42 @@ export class GoogleDriveClient {
   }
 }
 
-// Create singleton instance
-const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+// Create singleton instance - only initialize in browser
+let googleDriveClientInstance: GoogleDriveClient | null = null;
 
-// Debug logging
-if (typeof window !== 'undefined') {
-  console.log('Google Drive Client Config:', {
-    clientId: clientId ? `${clientId.substring(0, 10)}...` : 'NOT SET',
-    apiKey: apiKey ? `${apiKey.substring(0, 10)}...` : 'NOT SET',
-    hasClientId: !!clientId,
-    hasApiKey: !!apiKey
-  });
-}
+export const googleDriveClient = {
+  get instance() {
+    if (typeof window === 'undefined') {
+      // Server-side: return a mock instance
+      return {
+        initialize: async () => { throw new Error('Google Drive not available on server-side'); },
+        signIn: async () => { throw new Error('Google Drive not available on server-side'); },
+        signOut: async () => { throw new Error('Google Drive not available on server-side'); },
+        isSignedIn: () => false,
+        uploadImage: async () => { throw new Error('Google Drive not available on server-side'); },
+        deleteImage: async () => { throw new Error('Google Drive not available on server-side'); },
+        listImages: async () => []
+      } as any;
+    }
+    
+    if (!googleDriveClientInstance) {
+      const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 
-export const googleDriveClient = new GoogleDriveClient({
-  clientId: clientId || '',
-  apiKey: apiKey || ''
-});
+      // Debug logging
+      console.log('Google Drive Client Config:', {
+        clientId: clientId ? `${clientId.substring(0, 10)}...` : 'NOT SET',
+        apiKey: apiKey ? `${apiKey.substring(0, 10)}...` : 'NOT SET',
+        hasClientId: !!clientId,
+        hasApiKey: !!apiKey
+      });
+
+      googleDriveClientInstance = new GoogleDriveClient({
+        clientId: clientId || '',
+        apiKey: apiKey || ''
+      });
+    }
+    
+    return googleDriveClientInstance;
+  }
+};

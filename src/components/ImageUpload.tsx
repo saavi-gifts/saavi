@@ -47,11 +47,11 @@ export function ImageUpload({ value, onChange, onRemove, aspectRatio, googleAcce
       reader.readAsDataURL(file)
 
       // Upload to Google Drive if authenticated, otherwise fallback to local
-      if (googleAccessToken && googleDriveClient.isSignedIn()) {
+      if (googleAccessToken && googleDriveClient.instance.isSignedIn()) {
         try {
           // Upload directly to Google Drive using client-side API
           const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${file.name.split('.').pop()}`;
-          const imageUrl = await googleDriveClient.uploadImage(file, fileName);
+          const imageUrl = await googleDriveClient.instance.uploadImage(file, fileName);
           
           // Update with Google Drive URL
           onChange(imageUrl);
@@ -158,13 +158,13 @@ export function ImageUpload({ value, onChange, onRemove, aspectRatio, googleAcce
                formData.append('file', blob, 'cropped-image.jpg')
                
                try {
-                 if (googleAccessToken && googleDriveClient.isSignedIn()) {
+                 if (googleAccessToken && googleDriveClient.instance.isSignedIn()) {
                    try {
                      // Convert blob to File object for Google Drive upload
                      const croppedFile = new File([blob], 'cropped-image.jpg', { type: 'image/jpeg' });
                      const fileName = `cropped-${Date.now()}-${Math.random().toString(36).substr(2, 9)}.jpg`;
                      
-                     const imageUrl = await googleDriveClient.uploadImage(croppedFile, fileName);
+                     const imageUrl = await googleDriveClient.instance.uploadImage(croppedFile, fileName);
                      setPreviewUrl(imageUrl);
                      onChange(imageUrl);
                      setShowCropper(false);

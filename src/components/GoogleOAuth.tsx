@@ -14,7 +14,7 @@ export function GoogleOAuth({ onAuthSuccess, isAuthenticated }: GoogleOAuthProps
 
   // Check if user is already signed in
   useEffect(() => {
-    if (googleDriveClient.isSignedIn() && !isAuthenticated) {
+    if (googleDriveClient.instance.isSignedIn() && !isAuthenticated) {
       // User is already signed in, get the access token
       const authInstance = (window as any).gapi?.auth2?.getAuthInstance();
       if (authInstance) {
@@ -33,8 +33,8 @@ export function GoogleOAuth({ onAuthSuccess, isAuthenticated }: GoogleOAuthProps
     
     try {
       // Initialize and sign in with Google Drive
-      await googleDriveClient.initialize();
-      const accessToken = await googleDriveClient.signIn();
+      await googleDriveClient.instance.initialize();
+      const accessToken = await googleDriveClient.instance.signIn();
       onAuthSuccess(accessToken);
     } catch (error) {
       console.error('Google login error:', error);
@@ -49,7 +49,7 @@ export function GoogleOAuth({ onAuthSuccess, isAuthenticated }: GoogleOAuthProps
 
   const handleLogout = async () => {
     try {
-      await googleDriveClient.signOut();
+      await googleDriveClient.instance.signOut();
       window.location.reload();
     } catch (error) {
       console.error('Sign out error:', error);
