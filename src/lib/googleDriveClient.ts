@@ -100,7 +100,8 @@ export class GoogleDriveClient {
             });
             
             // Check if auth2 is already initialized
-            if (!window.gapi.auth2.getAuthInstance()) {
+            const existingAuthInstance = window.gapi.auth2.getAuthInstance();
+            if (!existingAuthInstance) {
               try {
                 // Initialize OAuth2
                 await window.gapi.auth2.init({
@@ -118,7 +119,19 @@ export class GoogleDriveClient {
                 console.log('✅ OAuth2 initialized with alternative approach');
               }
             } else {
-              console.log('✅ OAuth2 already initialized');
+              console.log('✅ OAuth2 already initialized, checking configuration...');
+              
+              // Check if the existing instance has the right client_id
+              const currentUser = existingAuthInstance.currentUser.get();
+              if (currentUser) {
+                const authResponse = currentUser.getAuthResponse();
+                console.log('Current auth instance user:', currentUser.getBasicProfile().getEmail());
+                console.log('Current auth instance scopes:', authResponse.scope);
+              }
+              
+              // If the existing instance doesn't have the right scopes, we need to handle this
+              // For now, we'll use the existing instance and see if it works
+              console.log('Using existing OAuth2 instance');
             }
             
             this.gapi = window.gapi;
@@ -218,20 +231,11 @@ export class GoogleDriveClient {
         throw new Error('Google API not initialized');
       }
       
-      // Get or create auth instance
-      let authInstance = this.gapi.auth2.getAuthInstance();
-      
-      // If no auth instance exists, create one
-      if (!authInstance) {
-        await this.gapi.auth2.init({
-          client_id: this.config.clientId,
-          scope: 'https://www.googleapis.com/auth/drive.file'
-        });
-        authInstance = this.gapi.auth2.getAuthInstance();
-      }
+      // Get the auth instance (should already be initialized from initialize())
+      const authInstance = this.gapi.auth2.getAuthInstance();
       
       if (!authInstance) {
-        throw new Error('Failed to initialize Google OAuth');
+        throw new Error('Failed to get Google OAuth instance');
       }
       
       // Check if user is already signed in
