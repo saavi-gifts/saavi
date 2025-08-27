@@ -94,10 +94,19 @@ export class GoogleDriveClient {
             await new Promise(resolve => setTimeout(resolve, 100));
             
             console.log('Step 3: Initializing OAuth2...');
+            const oauthScope = 'https://www.googleapis.com/auth/drive.file';
             console.log('OAuth2 init params:', {
               client_id: this.config.clientId,
-              scope: 'https://www.googleapis.com/auth/drive.file'
+              scope: oauthScope
             });
+            
+            // Validate that we have the required parameters
+            if (!this.config.clientId) {
+              throw new Error('OAuth2 initialization failed: client_id is required');
+            }
+            if (!oauthScope) {
+              throw new Error('OAuth2 initialization failed: scope is required');
+            }
             
             // Check if auth2 is already initialized
             const existingAuthInstance = window.gapi.auth2.getAuthInstance();
@@ -106,17 +115,24 @@ export class GoogleDriveClient {
                 // Initialize OAuth2
                 await window.gapi.auth2.init({
                   client_id: this.config.clientId,
-                  scope: 'https://www.googleapis.com/auth/drive.file'
+                  scope: oauthScope
                 });
                 console.log('✅ OAuth2 initialized successfully');
               } catch (oauthError) {
                 console.error('OAuth2 init failed, trying alternative approach:', oauthError);
                 
-                // Alternative: try to initialize without scope first
-                await window.gapi.auth2.init({
-                  client_id: this.config.clientId
-                });
-                console.log('✅ OAuth2 initialized with alternative approach');
+                // Alternative: try to initialize with minimal scope if primary fails
+                try {
+                  await window.gapi.auth2.init({
+                    client_id: this.config.clientId,
+                    scope: oauthScope
+                  });
+                  console.log('✅ OAuth2 initialized with alternative approach');
+                } catch (fallbackError) {
+                  console.error('Alternative OAuth2 init also failed:', fallbackError);
+                  const oauthErrorMessage = oauthError instanceof Error ? oauthError.message : String(oauthError);
+                  throw new Error(`OAuth2 initialization failed: ${oauthErrorMessage}. Please check your OAuth configuration.`);
+                }
               }
             } else {
               console.log('✅ OAuth2 already initialized, checking configuration...');

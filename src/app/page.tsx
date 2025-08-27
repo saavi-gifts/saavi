@@ -2,7 +2,7 @@ import { Container } from "@/components/Container";
 import { Hero } from "@/components/Hero";
 import { SectionTitle } from "@/components/SectionTitle";
 import { Benefits } from "@/components/Benefits";
-import { Video } from "@/components/Video";
+
 import { Testimonials } from "@/components/Testimonials";
 import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
@@ -126,12 +126,10 @@ export default function Home() {
         preTitle="Our Mission"
         title="Empowering Rural Communities, Preserving Traditions"
       >
-        Watch how Saavi is making a difference in rural India by supporting artisans and 
+        Saavi is making a difference in rural India by supporting artisans and 
         remote manufacturers while preserving traditional crafts. Every product purchase creates 
         sustainable livelihoods while keeping ancient Indian art forms alive.
       </SectionTitle>
-
-      <Video videoId="fZ0D0cnR88E" />
 
       {/* Customer Stories Section - Hidden for now
       <SectionTitle

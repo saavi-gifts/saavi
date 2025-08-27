@@ -134,6 +134,20 @@ export function Footer() {
         </div>
 
         <div className="my-10 text-sm text-center text-gray-600 dark:text-gray-400">
+          <div className="flex justify-center space-x-6 mb-4">
+            <Link 
+              href="/privacy" 
+              className="hover:text-saavi-gold transition-colors duration-200"
+            >
+              Privacy Policy
+            </Link>
+            <Link 
+              href="/terms" 
+              className="hover:text-saavi-gold transition-colors duration-200"
+            >
+              Terms of Service
+            </Link>
+          </div>
           Copyright © {new Date().getFullYear()}. Made with ♥ by Saavi.
         </div>
       </Container>
