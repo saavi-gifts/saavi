@@ -26,31 +26,41 @@ export function PopupWidget() {
 
   const onSubmit = async (data: any, e: any) => {
     console.log(data);
-    await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(data, null, 2),
-    })
-      .then(async (response) => {
-        let json = await response.json();
-        if (json.success) {
-          setIsSuccess(true);
-          setMessage(json.message);
-          e.target.reset();
-          reset();
-        } else {
-          setIsSuccess(false);
-          setMessage(json.message);
+    
+    try {
+      // Use FormSubmit.co for email submission
+      const formData = new FormData();
+      
+      // Add all form fields
+      Object.keys(data).forEach(key => {
+        if (data[key]) {
+          formData.append(key, data[key]);
         }
-      })
-      .catch((error) => {
-        setIsSuccess(false);
-        setMessage("Client Error. Please check the console.log for more info");
-        console.log(error);
       });
+      
+      // FormSubmit configuration
+      formData.append('_subject', 'Contact Form Submission - Saavi');
+      formData.append('_replyto', data.email || 'not-provided@example.com');
+      formData.append('_next', window.location.origin + '/thank-you'); // Optional: redirect after submission
+      
+      const response = await fetch("https://formsubmit.co/saavi.gifts@gmail.com", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        setIsSuccess(true);
+        setMessage("Thank you! Your message has been sent successfully.");
+        e.target.reset();
+        reset();
+      } else {
+        throw new Error(`FormSubmit failed with status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setIsSuccess(false);
+      setMessage("There was an error sending your message. Please try again or contact us directly.");
+    }
   };
 
   return (

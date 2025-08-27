@@ -61,7 +61,40 @@ export const GiftCurator = () => {
     e.preventDefault();
     
     try {
-      // Prepare email content
+      // Use FormSubmit.co for email submission
+      const submitData = new FormData();
+      
+      // Add form fields
+      submitData.append('occasion', formData.occasion);
+      submitData.append('budget', formData.budget);
+      submitData.append('recipient', formData.recipient);
+      submitData.append('preferences', formData.preferences);
+      submitData.append('custom_message', formData.customMessage);
+      submitData.append('email', formData.email);
+      submitData.append('contact_number', formData.contactNumber);
+      
+      // FormSubmit configuration
+      submitData.append('_subject', 'Gift Curation Request - Saavi');
+      submitData.append('_replyto', formData.email);
+      submitData.append('_next', window.location.origin + '/thank-you'); // Optional: redirect after submission
+      
+      const response = await fetch('https://formsubmit.co/saavi.gifts@gmail.com', {
+        method: 'POST',
+        body: submitData
+      });
+
+      if (response.ok) {
+        console.log('Gift curation request sent successfully via FormSubmit');
+        // Show success message
+        setIsSubmitted(true);
+      } else {
+        throw new Error(`FormSubmit failed with status: ${response.status}`);
+      }
+      
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      
+      // Fallback to mailto if FormSubmit fails
       const subject = "Gift Curation Request - Saavi";
       const body = `Hi Saavi Team,
 
@@ -80,16 +113,11 @@ Please get back to me with personalized recommendations.
 Best regards,
 ${formData.email}`;
 
-      // For now, we'll use mailto as a fallback since we removed API routes
-      // In a real implementation, you would send this to your backend
       const mailtoLink = `mailto:saavi.gifts@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       window.open(mailtoLink);
       
-      // Show success message
+      // Show success message even with fallback
       setIsSubmitted(true);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('There was an error submitting your request. Please try again.');
     }
   };
 

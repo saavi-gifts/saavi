@@ -32,28 +32,73 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   const onSubmit = async (data: ContactFormData) => {
     try {
-      // Send email using our email configuration
-      const emailSent = await sendEmail(data);
+      // Use FormSubmit.co for email submission
+      const formData = new FormData();
       
-      if (emailSent) {
-        // Email was sent successfully via EmailJS or Web3Forms
-        console.log('Email sent successfully!');
+      // Add form fields
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('phone', data.phone);
+      formData.append('company', data.company || 'Not specified');
+      formData.append('inquiry_type', data.inquiryType);
+      formData.append('budget_range', data.budget);
+      formData.append('message', data.message);
+      
+      // FormSubmit configuration
+      formData.append('_subject', 'Sales Inquiry - Saavi');
+      formData.append('_replyto', data.email);
+      formData.append('_next', window.location.origin + '/thank-you'); // Optional: redirect after submission
+      
+      const response = await fetch('https://formsubmit.co/saavi.gifts@gmail.com', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        console.log('Email sent successfully via FormSubmit');
+        // Show success message
+        setIsSuccess(true);
+        
+        // Auto-close after 5 seconds
+        setTimeout(() => {
+          handleClose();
+        }, 5000);
       } else {
-        // Fallback to mailto was used
-        console.log('Email sent via fallback method');
+        throw new Error(`FormSubmit failed with status: ${response.status}`);
       }
       
-      // Show success message
+    } catch (error) {
+      console.error('Error sending email:', error);
+      
+      // Fallback to mailto if FormSubmit fails
+      const subject = "Sales Inquiry - Saavi";
+      const body = `Hi Saavi Team,
+
+I'm interested in your products/services. Here are my details:
+
+Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone}
+Company: ${data.company || 'N/A'}
+Inquiry Type: ${data.inquiryType}
+Budget Range: ${data.budget}
+Message: ${data.message}
+
+Please get back to me with more information.
+
+Best regards,
+${data.name}`;
+
+      const mailtoLink = `mailto:saavi.gifts@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(mailtoLink);
+      
+      // Show success message even with fallback
       setIsSuccess(true);
       
       // Auto-close after 5 seconds
       setTimeout(() => {
         handleClose();
       }, 5000);
-      
-    } catch (error) {
-      console.error('Error sending email:', error);
-      alert('There was an error sending your inquiry. Please try again or contact us directly.');
     }
   };
 

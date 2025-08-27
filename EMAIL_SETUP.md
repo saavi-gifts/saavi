@@ -1,160 +1,138 @@
 # Email Setup Guide for Saavi Website
 
-This guide explains how to set up automatic email sending for the contact forms on your Saavi website.
+This guide explains how email functionality is set up for your Saavi website using FormSubmit.co.
 
-## Current Status
+## Current Status ✅
 
-The website now has **automatic email sending** implemented with multiple fallback options:
+The website now has **automatic email sending** implemented using **FormSubmit.co** as the primary email service:
 
-1. **EmailJS** (Primary method - recommended)
-2. **Web3Forms** (Secondary method - free)
-3. **Mailto fallback** (Always works as backup)
+- ✅ **FormSubmit.co** (Primary method - free, no registration required)
+- ✅ **Mailto fallback** (Always works as backup)
+- ✅ **Multiple forms integrated** (Contact, Gift Curation, Popup Widget)
 
-## Option 1: EmailJS Setup (Recommended)
-
-### Step 1: Create EmailJS Account
-1. Go to [EmailJS.com](https://www.emailjs.com/)
-2. Sign up for a free account (200 emails/month free)
-3. Verify your email address
-
-### Step 2: Create Email Service
-1. In EmailJS dashboard, go to "Email Services"
-2. Click "Add New Service"
-3. Choose "Gmail" or "Outlook" (or your preferred email provider)
-4. Connect your email account (saavi.gifts@gmail.com)
-5. Note down the **Service ID**
-
-### Step 3: Create Email Template
-1. Go to "Email Templates"
-2. Click "Create New Template"
-3. Use this template content:
-
-```html
-Subject: Sales Inquiry - Saavi
-
-Hi Saavi Team,
-
-You have received a new sales inquiry:
-
-Name: {{from_name}}
-Email: {{from_email}}
-Phone: {{from_phone}}
-Company: {{from_company}}
-Inquiry Type: {{inquiry_type}}
-Budget Range: {{budget_range}}
-Message: {{message}}
-
-Please respond to this inquiry within 24 hours.
-
-Best regards,
-Saavi Website
-```
-
-4. Note down the **Template ID**
-
-### Step 4: Get Public Key
-1. Go to "Account" → "API Keys"
-2. Copy your **Public Key**
-
-### Step 5: Configure Environment Variables
-Create a `.env.local` file in your project root:
-
-```env
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id_here
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id_here
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key_here
-```
-
-## Option 2: Web3Forms Setup (Alternative)
-
-### Step 1: Get Access Key
-1. Go to [Web3Forms.com](https://web3forms.com/)
-2. Click "Get Access Key"
-3. Enter your email (saavi.gifts@gmail.com)
-4. Check your email for the access key
-
-### Step 2: Update Configuration
-In `src/lib/emailConfig.ts`, replace:
-```typescript
-formData.append('access_key', 'YOUR_WEB3FORMS_ACCESS_KEY');
-```
-with your actual access key.
-
-## How It Works Now
+## How It Works
 
 ### ✅ **Automatic Email Sending**
-- When users fill out the contact form, emails are sent **automatically**
+- When users fill out any form, emails are sent **automatically** to saavi.gifts@gmail.com
 - No need for users to manually send emails
 - Professional and seamless user experience
+- **No registration or API keys required**
 
-### ✅ **Multiple Fallback Options**
-- **Primary**: EmailJS sends emails directly to your inbox
-- **Secondary**: Web3Forms handles form submissions
-- **Fallback**: Opens user's email client if other methods fail
+### ✅ **Forms Integrated**
+1. **Contact Modal** - Sales inquiries and general contact
+2. **Gift Curator** - Gift curation requests
+3. **Popup Widget** - Quick contact form
 
 ### ✅ **Professional Email Format**
 - All form data is properly formatted
 - Includes user's contact information
 - Ready for immediate follow-up
+- Reply-to field set to user's email for easy responses
+
+## FormSubmit.co Setup
+
+### What We've Done ✅
+- Integrated FormSubmit.co endpoint: `https://formsubmit.co/saavi.gifts@gmail.com`
+- Configured all forms to use this service
+- Added proper form field mapping
+- Set up email subjects and reply-to fields
+- Created thank you page for post-submission redirect
+
+### How FormSubmit.co Works
+1. **No Registration Required** - Just point your forms to the endpoint
+2. **First Submission** - Triggers a confirmation email to saavi.gifts@gmail.com
+3. **Confirm Email** - Click the confirmation link in the email
+4. **All Set** - Forms will work automatically from then on
+
+### Features Enabled
+- **Custom Subject Lines** - Different subjects for each form type
+- **Reply-To Field** - Easy to reply directly to users
+- **Redirect After Submission** - Users see a thank you page
+- **Spam Protection** - Built-in spam filtering
+- **Email Templates** - Professional email formatting
 
 ## Testing the Email Functionality
 
-### Before Setup
-- Forms will use the mailto fallback
-- Users will see their email client open
-- Still functional but not automatic
+### First Time Setup
+1. Submit any form on the website
+2. Check saavi.gifts@gmail.com for a confirmation email
+3. Click the confirmation link in the email
+4. All forms are now active!
 
 ### After Setup
 - Emails are sent automatically
 - Users see success message immediately
 - Professional experience for your customers
+- All form data goes directly to your inbox
 
-## Benefits of Automatic Email Sending
+## Benefits of FormSubmit.co
 
-1. **Better User Experience**
+1. **Zero Configuration**
+   - No API keys needed
+   - No account setup required
+   - Works immediately
+
+2. **Professional Experience**
    - No manual email steps
    - Immediate confirmation
    - Professional appearance
 
-2. **Improved Lead Capture**
-   - Higher completion rates
-   - No lost inquiries
-   - Better follow-up opportunities
+3. **Reliable Service**
+   - Free tier available
+   - High deliverability
+   - Built-in spam protection
 
-3. **Professional Image**
-   - Automated workflow
-   - Consistent communication
-   - Brand credibility
+4. **Easy Management**
+   - All emails go to one inbox
+   - Easy to organize and respond
+   - No technical maintenance
+
+## Form Details
+
+### Contact Modal Form
+- **Endpoint**: `https://formsubmit.co/saavi.gifts@gmail.com`
+- **Subject**: "Sales Inquiry - Saavi"
+- **Fields**: Name, Email, Phone, Company, Inquiry Type, Budget, Message
+
+### Gift Curator Form
+- **Endpoint**: `https://formsubmit.co/saavi.gifts@gmail.com`
+- **Subject**: "Gift Curation Request - Saavi"
+- **Fields**: Occasion, Budget, Recipient, Preferences, Custom Message, Email, Contact Number
+
+### Popup Widget Form
+- **Endpoint**: `https://formsubmit.co/saavi.gifts@gmail.com`
+- **Subject**: "Contact Form Submission - Saavi"
+- **Fields**: Dynamic based on form content
 
 ## Troubleshooting
 
 ### Emails Not Being Sent
-1. Check environment variables are set correctly
-2. Verify EmailJS service is connected
-3. Check browser console for errors
+1. Check if you've confirmed the first submission email
+2. Verify the form is submitting to the correct endpoint
+3. Check browser console for any JavaScript errors
 4. Ensure fallback methods are working
 
-### Environment Variables Not Working
-1. Restart your development server
-2. Check `.env.local` file location
-3. Verify variable names are correct
-4. Ensure no spaces around `=` signs
+### Confirmation Email Not Received
+1. Check spam/junk folder
+2. Verify saavi.gifts@gmail.com is correct
+3. Try submitting the form again
+4. Check if email service is working
 
 ## Next Steps
 
-1. **Choose your preferred email service** (EmailJS recommended)
-2. **Follow the setup steps** above
-3. **Test the contact forms** to ensure emails are sent
-4. **Monitor your inbox** for incoming inquiries
+1. **Test the forms** - Submit a test form to trigger confirmation
+2. **Confirm email** - Click the confirmation link in your inbox
+3. **Monitor submissions** - All future form submissions will work automatically
+4. **Customize if needed** - Modify subjects, redirects, or email templates
 
 ## Support
 
-If you need help setting up email functionality:
-1. Check the EmailJS documentation
-2. Review the Web3Forms setup guide
-3. Check browser console for error messages
-4. Ensure all environment variables are configured
+If you need help with the email functionality:
+1. Check the FormSubmit.co documentation at [formsubmit.co](https://formsubmit.co/)
+2. Review browser console for any error messages
+3. Ensure all forms are pointing to the correct endpoint
+4. Verify the confirmation email was received and confirmed
 
 ---
 
-**Note**: The website will work immediately with the mailto fallback, but setting up automatic email sending will provide a much better user experience and professional appearance.
+**Note**: The website is now fully configured with FormSubmit.co. After confirming the first submission, all forms will work automatically without any additional setup required.
