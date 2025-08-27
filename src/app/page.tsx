@@ -133,6 +133,7 @@ export default function Home() {
 
       <Video videoId="fZ0D0cnR88E" />
 
+      {/* Customer Stories Section - Hidden for now
       <SectionTitle
         preTitle="Customer Stories"
         title="Moments That Matter"
@@ -142,6 +143,7 @@ export default function Home() {
       </SectionTitle>
 
       <Testimonials />
+      */}
 
       {/* FAQ Section - Commented out for later implementation
       <SectionTitle preTitle="FAQ" title="Frequently Asked Questions">
