@@ -22,20 +22,42 @@ export class GoogleDriveClient {
   private folderId: string | null = null;
   private readonly FOLDER_NAME = 'Saavi Product Images';
 
-  constructor(private config: GoogleDriveConfig) {}
+  constructor(private config: GoogleDriveConfig) {
+    // Validate configuration
+    if (!config.clientId) {
+      console.error('Google Drive Client: Missing required clientId');
+      throw new Error('Google Drive Client: Missing required clientId');
+    }
+    if (!config.apiKey) {
+      console.error('Google Drive Client: Missing required apiKey');
+      throw new Error('Google Drive Client: Missing required apiKey');
+    }
+  }
 
   // Initialize Google API
   async initialize(): Promise<void> {
     if (this.isInitialized) return;
 
     try {
+      console.log('🚀 Starting Google Drive initialization...');
+      
+      // Validate configuration before proceeding
+      if (!this.config.clientId || !this.config.apiKey) {
+        throw new Error(`Invalid configuration: clientId=${!!this.config.clientId}, apiKey=${!!this.config.apiKey}`);
+      }
+      
+      console.log('✅ Configuration validated');
+
       // Load Google API script
+      console.log('📥 Loading Google API script...');
       await this.loadGoogleAPI();
       
       // Wait for gapi to be available
+      console.log('⏳ Waiting for Google API to be available...');
       await this.waitForGapi();
       
       // Initialize the API
+      console.log('🔧 Initializing Google API...');
       await new Promise<void>((resolve, reject) => {
         if (!window.gapi) {
           reject(new Error('Google API not available'));
@@ -44,11 +66,37 @@ export class GoogleDriveClient {
 
         window.gapi.load('client:auth2', async () => {
           try {
-            // Initialize the client
+            console.log('Initializing Google API with:', {
+              apiKey: this.config.apiKey ? `${this.config.apiKey.substring(0, 10)}...` : 'NOT SET',
+              clientId: this.config.clientId ? `${this.config.clientId.substring(0, 10)}...` : 'NOT SET'
+            });
+
+            console.log('Step 1: Initializing Google API client...');
+            // Initialize the client first
             await window.gapi.client.init({
               apiKey: this.config.apiKey,
-              clientId: this.config.clientId,
-              discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
+              clientId: this.config.clientId
+            });
+            console.log('✅ Google API client initialized successfully');
+            
+            console.log('Step 2: Loading Google Drive API...');
+            // Load the Drive API specifically
+            await window.gapi.client.load('drive', 'v3');
+            console.log('✅ Google Drive API loaded successfully');
+            
+            // Verify Drive API is accessible
+            if (!window.gapi.client.drive) {
+              throw new Error('Google Drive API failed to load. Please ensure it is enabled in Google Cloud Console.');
+            }
+            console.log('✅ Google Drive API verified as accessible');
+            
+            // Wait a moment for the client to be fully ready
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            console.log('Step 3: Initializing OAuth2...');
+            console.log('OAuth2 init params:', {
+              client_id: this.config.clientId,
+              scope: 'https://www.googleapis.com/auth/drive.file'
             });
             
             // Initialize OAuth2
@@ -56,18 +104,44 @@ export class GoogleDriveClient {
               client_id: this.config.clientId,
               scope: 'https://www.googleapis.com/auth/drive.file'
             });
+            console.log('✅ OAuth2 initialized successfully');
             
             this.gapi = window.gapi;
             this.isInitialized = true;
+            console.log('🎉 Google Drive initialization complete!');
             resolve();
           } catch (error) {
-            reject(error);
+            console.error('Google API initialization error:', error);
+            // Ensure we pass the actual error object
+            reject(error instanceof Error ? error : new Error(String(error)));
           }
         });
       });
     } catch (error) {
       console.error('Failed to initialize Google API:', error);
-      throw new Error('Failed to initialize Google Drive');
+      
+      // Convert error to string properly
+      let errorMessage = 'Unknown error';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      } else if (error && typeof error === 'object') {
+        errorMessage = JSON.stringify(error);
+      }
+      
+      console.error('Error details:', { error, errorMessage, errorType: typeof error });
+      
+      // Provide more specific error information
+      if (errorMessage.includes('API discovery response missing required fields')) {
+        throw new Error('Google Drive API not enabled. Please enable Google Drive API in Google Cloud Console.');
+      } else if (errorMessage.includes('API key not valid')) {
+        throw new Error('Invalid API key. Please check your Google Cloud Console API key.');
+      } else if (errorMessage.includes('client_id')) {
+        throw new Error('Invalid client ID. Please check your Google Cloud Console OAuth credentials.');
+      }
+      
+      throw new Error(`Failed to initialize Google Drive: ${errorMessage}`);
     }
   }
 
@@ -81,22 +155,39 @@ export class GoogleDriveClient {
 
       const script = document.createElement('script');
       script.src = 'https://apis.google.com/js/api.js';
-      script.onload = () => resolve();
-      script.onerror = () => reject(new Error('Failed to load Google API'));
+      script.onload = () => {
+        console.log('✅ Google API script loaded successfully');
+        resolve();
+      };
+      script.onerror = (error) => {
+        console.error('❌ Failed to load Google API script:', error);
+        reject(new Error('Failed to load Google API script'));
+      };
       document.head.appendChild(script);
     });
   }
 
   // Wait for gapi to be available after script loads
   private waitForGapi(): Promise<void> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
+      let attempts = 0;
+      const maxAttempts = 50; // 5 seconds timeout
+      
       const checkGapi = () => {
+        attempts++;
+        
         if (window.gapi && typeof window.gapi.load === 'function') {
+          console.log('✅ Google API (gapi) is available');
           resolve();
+        } else if (attempts >= maxAttempts) {
+          const error = new Error('Google API (gapi) failed to load after 5 seconds');
+          console.error('❌', error.message);
+          reject(error);
         } else {
           setTimeout(checkGapi, 100);
         }
       };
+      
       checkGapi();
     });
   }
@@ -322,7 +413,20 @@ export class GoogleDriveClient {
 }
 
 // Create singleton instance
+const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+
+// Debug logging
+if (typeof window !== 'undefined') {
+  console.log('Google Drive Client Config:', {
+    clientId: clientId ? `${clientId.substring(0, 10)}...` : 'NOT SET',
+    apiKey: apiKey ? `${apiKey.substring(0, 10)}...` : 'NOT SET',
+    hasClientId: !!clientId,
+    hasApiKey: !!apiKey
+  });
+}
+
 export const googleDriveClient = new GoogleDriveClient({
-  clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || ''
+  clientId: clientId || '',
+  apiKey: apiKey || ''
 });
