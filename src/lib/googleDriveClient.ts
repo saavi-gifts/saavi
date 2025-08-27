@@ -99,12 +99,27 @@ export class GoogleDriveClient {
               scope: 'https://www.googleapis.com/auth/drive.file'
             });
             
-            // Initialize OAuth2
-            await window.gapi.auth2.init({
-              client_id: this.config.clientId,
-              scope: 'https://www.googleapis.com/auth/drive.file'
-            });
-            console.log('✅ OAuth2 initialized successfully');
+            // Check if auth2 is already initialized
+            if (!window.gapi.auth2.getAuthInstance()) {
+              try {
+                // Initialize OAuth2
+                await window.gapi.auth2.init({
+                  client_id: this.config.clientId,
+                  scope: 'https://www.googleapis.com/auth/drive.file'
+                });
+                console.log('✅ OAuth2 initialized successfully');
+              } catch (oauthError) {
+                console.error('OAuth2 init failed, trying alternative approach:', oauthError);
+                
+                // Alternative: try to initialize without scope first
+                await window.gapi.auth2.init({
+                  client_id: this.config.clientId
+                });
+                console.log('✅ OAuth2 initialized with alternative approach');
+              }
+            } else {
+              console.log('✅ OAuth2 already initialized');
+            }
             
             this.gapi = window.gapi;
             this.isInitialized = true;
