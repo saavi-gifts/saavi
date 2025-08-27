@@ -2,15 +2,17 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { PhotoIcon, XMarkIcon, ArrowsPointingOutIcon, ScissorsIcon } from '@heroicons/react/24/outline'
+import { googleDriveClient } from '@/lib/googleDriveClient'
 
 interface ImageUploadProps {
   value?: string
   onChange: (imageUrl: string) => void
   onRemove: () => void
   aspectRatio?: number // Optional aspect ratio for cropping
+  googleAccessToken?: string // Google Drive access token
 }
 
-export function ImageUpload({ value, onChange, onRemove, aspectRatio }: ImageUploadProps) {
+export function ImageUpload({ value, onChange, onRemove, aspectRatio, googleAccessToken }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string>(value || '')
   const [isDragging, setIsDragging] = useState(false)
@@ -44,27 +46,42 @@ export function ImageUpload({ value, onChange, onRemove, aspectRatio }: ImageUpl
       }
       reader.readAsDataURL(file)
 
-      // Upload to server
-      const formData = new FormData()
-      formData.append('file', file)
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-
-      if (!response.ok) {
-        throw new Error('Upload failed')
-      }
-
-      const result = await response.json()
-      
-      if (result.success) {
-        // Update with server URL
-        onChange(result.imageUrl)
-        setPreviewUrl(result.imageUrl)
+      // Upload to Google Drive if authenticated, otherwise fallback to local
+      if (googleAccessToken && googleDriveClient.isSignedIn()) {
+        try {
+          // Upload directly to Google Drive using client-side API
+          const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${file.name.split('.').pop()}`;
+          const imageUrl = await googleDriveClient.uploadImage(file, fileName);
+          
+          // Update with Google Drive URL
+          onChange(imageUrl);
+          setPreviewUrl(imageUrl);
+        } catch (error) {
+          console.error('Google Drive upload failed:', error);
+          throw new Error('Failed to upload to Google Drive');
+        }
       } else {
-        throw new Error(result.error || 'Upload failed')
+        // Fallback to local storage (for development/testing)
+        const formData = new FormData()
+        formData.append('file', file)
+
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        })
+
+        if (!response.ok) {
+          throw new Error('Local upload failed')
+        }
+
+        const result = await response.json()
+        
+        if (result.success) {
+          onChange(result.imageUrl)
+          setPreviewUrl(result.imageUrl)
+        } else {
+          throw new Error(result.error || 'Local upload failed')
+        }
       }
     } catch (error) {
       console.error('Upload error:', error)
@@ -134,32 +151,49 @@ export function ImageUpload({ value, onChange, onRemove, aspectRatio }: ImageUpl
           ctx.drawImage(img, 0, 0)
           ctx.restore()
           
-          // Convert canvas to blob and upload
-          canvas.toBlob(async (blob) => {
-            if (blob) {
-              const formData = new FormData()
-              formData.append('file', blob, 'cropped-image.jpg')
-              
-              try {
-                const response = await fetch('/api/upload', {
-                  method: 'POST',
-                  body: formData
-                })
-                
-                if (response.ok) {
-                  const result = await response.json()
-                  if (result.success) {
-                    setPreviewUrl(result.imageUrl)
-                    onChange(result.imageUrl)
-                    setShowCropper(false)
-                  }
-                }
-              } catch (error) {
-                console.error('Failed to upload cropped image:', error)
-                alert('Failed to save cropped image')
-              }
-            }
-          }, 'image/jpeg', 0.9)
+                     // Convert canvas to blob and upload
+           canvas.toBlob(async (blob) => {
+             if (blob) {
+               const formData = new FormData()
+               formData.append('file', blob, 'cropped-image.jpg')
+               
+               try {
+                 if (googleAccessToken && googleDriveClient.isSignedIn()) {
+                   try {
+                     // Convert blob to File object for Google Drive upload
+                     const croppedFile = new File([blob], 'cropped-image.jpg', { type: 'image/jpeg' });
+                     const fileName = `cropped-${Date.now()}-${Math.random().toString(36).substr(2, 9)}.jpg`;
+                     
+                     const imageUrl = await googleDriveClient.uploadImage(croppedFile, fileName);
+                     setPreviewUrl(imageUrl);
+                     onChange(imageUrl);
+                     setShowCropper(false);
+                   } catch (error) {
+                     console.error('Failed to upload cropped image to Google Drive:', error);
+                     alert('Failed to save cropped image to Google Drive');
+                   }
+                 } else {
+                   // Fallback to local upload
+                   const response = await fetch('/api/upload', {
+                     method: 'POST',
+                     body: formData
+                   })
+                   
+                   if (response.ok) {
+                     const result = await response.json()
+                     if (result.success) {
+                       setPreviewUrl(result.imageUrl)
+                       onChange(result.imageUrl)
+                       setShowCropper(false)
+                     }
+                   }
+                 }
+               } catch (error) {
+                 console.error('Failed to upload cropped image:', error)
+                 alert('Failed to save cropped image')
+               }
+             }
+           }, 'image/jpeg', 0.9)
         }
       }
       

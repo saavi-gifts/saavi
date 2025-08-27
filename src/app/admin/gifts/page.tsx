@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { Container } from "@/components/Container"
 import { Gift, CreateGiftData } from "@/types/gift"
 import { ImageUpload } from "@/components/ImageUpload"
+import { GoogleOAuth } from "@/components/GoogleOAuth"
 import { PhotoIcon } from "@heroicons/react/24/outline"
 
 const occasionOptions = [
@@ -27,6 +28,7 @@ export default function AdminGifts() {
   const [showJsonOutput, setShowJsonOutput] = useState(false)
   const [jsonOutput, setJsonOutput] = useState("")
   const [user, setUser] = useState<any>(null)
+  const [googleAccessToken, setGoogleAccessToken] = useState<string | null>(null)
 
   // Form state
   const [formData, setFormData] = useState<CreateGiftData>({
@@ -225,26 +227,30 @@ export default function AdminGifts() {
               Welcome, {user?.name}
             </p>
           </div>
-          <div className="flex gap-4">
-            <button
-              onClick={generateJsonOutput}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
-            >
-              Export JSON
-            </button>
-            <button
-              onClick={() => setShowForm(true)}
-              className="bg-saavi-gold hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-medium transition-colors"
-            >
-              Add New Gift
-            </button>
-            <button
-              onClick={handleSignOut}
-              className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-md font-medium transition-colors"
-            >
-              Sign Out
-            </button>
-          </div>
+                  <div className="flex gap-4">
+          <GoogleOAuth
+            onAuthSuccess={setGoogleAccessToken}
+            isAuthenticated={!!googleAccessToken}
+          />
+          <button
+            onClick={generateJsonOutput}
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+          >
+            Export JSON
+          </button>
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-saavi-gold hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-medium transition-colors"
+          >
+            Add New Gift
+          </button>
+          <button
+            onClick={handleSignOut}
+            className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-md font-medium transition-colors"
+          >
+            Sign Out
+          </button>
+        </div>
         </div>
 
         {/* Gift Form */}
@@ -295,6 +301,7 @@ export default function AdminGifts() {
                   value={formData.imageUrl}
                   onChange={(imageUrl) => handleInputChange('imageUrl', imageUrl)}
                   onRemove={() => handleInputChange('imageUrl', '')}
+                  googleAccessToken={googleAccessToken || undefined}
                 />
               </div>
 
