@@ -44,11 +44,17 @@ export class GoogleDriveClient {
 
         window.gapi.load('client:auth2', async () => {
           try {
+            // Initialize the client
             await window.gapi.client.init({
               apiKey: this.config.apiKey,
               clientId: this.config.clientId,
-              scope: 'https://www.googleapis.com/auth/drive.file',
               discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
+            });
+            
+            // Initialize OAuth2
+            await window.gapi.auth2.init({
+              client_id: this.config.clientId,
+              scope: 'https://www.googleapis.com/auth/drive.file'
             });
             
             this.gapi = window.gapi;
@@ -106,13 +112,51 @@ export class GoogleDriveClient {
         throw new Error('Google API not initialized');
       }
       
-      const authInstance = this.gapi.auth2.getAuthInstance();
-      const user = await authInstance.signIn();
+      // Get or create auth instance
+      let authInstance = this.gapi.auth2.getAuthInstance();
+      
+      // If no auth instance exists, create one
+      if (!authInstance) {
+        await this.gapi.auth2.init({
+          client_id: this.config.clientId,
+          scope: 'https://www.googleapis.com/auth/drive.file'
+        });
+        authInstance = this.gapi.auth2.getAuthInstance();
+      }
+      
+      if (!authInstance) {
+        throw new Error('Failed to initialize Google OAuth');
+      }
+      
+      // Check if user is already signed in
+      if (authInstance.isSignedIn.get()) {
+        const user = authInstance.currentUser.get();
+        this.accessToken = user.getAuthResponse().access_token;
+        return this.accessToken!;
+      }
+      
+      // Trigger sign in (this will show account selection popup)
+      const user = await authInstance.signIn({
+        prompt: 'select_account' // This ensures account selection popup
+      });
+      
       this.accessToken = user.getAuthResponse().access_token;
       return this.accessToken!;
     } catch (error) {
       console.error('Sign in failed:', error);
-      throw new Error('Google sign in failed');
+      
+      // Provide more specific error messages
+      if (error instanceof Error) {
+        if (error.message.includes('popup_closed')) {
+          throw new Error('Sign-in was cancelled. Please try again.');
+        } else if (error.message.includes('access_denied')) {
+          throw new Error('Access was denied. Please grant the required permissions.');
+        } else if (error.message.includes('immediate_failed')) {
+          throw new Error('Sign-in failed. Please try again.');
+        }
+      }
+      
+      throw new Error('Google sign in failed. Please check your internet connection and try again.');
     }
   }
 
