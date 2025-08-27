@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Container } from "@/components/Container"
 import { Gift, CreateGiftData } from "@/types/gift"
+import { ImageUpload } from "@/components/ImageUpload"
+import { PhotoIcon } from "@heroicons/react/24/outline"
 
 const occasionOptions = [
   "Birthday", "Anniversary", "Wedding", "Diwali", "Holi", "Christmas", 
@@ -287,6 +289,15 @@ export default function AdminGifts() {
                 />
               </div>
 
+              <div>
+                <label className="block text-sm font-medium mb-1">Product Image</label>
+                <ImageUpload
+                  value={formData.imageUrl}
+                  onChange={(imageUrl) => handleInputChange('imageUrl', imageUrl)}
+                  onRemove={() => handleInputChange('imageUrl', '')}
+                />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Min Price (₹)</label>
@@ -452,6 +463,9 @@ export default function AdminGifts() {
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Image
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                     Gift
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -471,6 +485,21 @@ export default function AdminGifts() {
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {gifts.map((gift) => (
                   <tr key={gift.id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {gift.imageUrl ? (
+                        <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                          <img
+                            src={gift.imageUrl}
+                            alt={gift.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-16 h-16 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                          <PhotoIcon className="w-6 h-6 text-gray-400" />
+                        </div>
+                      )}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
                         <div className="text-sm font-medium text-gray-900 dark:text-white">
