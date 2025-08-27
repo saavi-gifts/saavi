@@ -38,7 +38,8 @@ export function GoogleOAuth({ onAuthSuccess, isAuthenticated }: GoogleOAuthProps
       onAuthSuccess(accessToken);
     } catch (error) {
       console.error('Google login error:', error);
-      setError('Failed to sign in with Google Drive');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to sign in with Google Drive';
+      setError(`Google Drive Error: ${errorMessage}. Please check your internet connection and try again.`);
     } finally {
       setIsLoading(false);
     }

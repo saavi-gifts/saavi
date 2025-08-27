@@ -32,18 +32,26 @@ export class GoogleDriveClient {
       // Load Google API script
       await this.loadGoogleAPI();
       
+      // Wait for gapi to be available
+      await this.waitForGapi();
+      
       // Initialize the API
       await new Promise<void>((resolve, reject) => {
-        gapi.load('client:auth2', async () => {
+        if (!window.gapi) {
+          reject(new Error('Google API not available'));
+          return;
+        }
+
+        window.gapi.load('client:auth2', async () => {
           try {
-            await gapi.client.init({
+            await window.gapi.client.init({
               apiKey: this.config.apiKey,
               clientId: this.config.clientId,
               scope: 'https://www.googleapis.com/auth/drive.file',
               discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
             });
             
-            this.gapi = gapi;
+            this.gapi = window.gapi;
             this.isInitialized = true;
             resolve();
           } catch (error) {
@@ -73,6 +81,20 @@ export class GoogleDriveClient {
     });
   }
 
+  // Wait for gapi to be available after script loads
+  private waitForGapi(): Promise<void> {
+    return new Promise((resolve) => {
+      const checkGapi = () => {
+        if (window.gapi && typeof window.gapi.load === 'function') {
+          resolve();
+        } else {
+          setTimeout(checkGapi, 100);
+        }
+      };
+      checkGapi();
+    });
+  }
+
   // Sign in user
   async signIn(): Promise<string> {
     if (!this.isInitialized) {
@@ -80,6 +102,10 @@ export class GoogleDriveClient {
     }
 
     try {
+      if (!this.gapi) {
+        throw new Error('Google API not initialized');
+      }
+      
       const authInstance = this.gapi.auth2.getAuthInstance();
       const user = await authInstance.signIn();
       this.accessToken = user.getAuthResponse().access_token;
@@ -92,7 +118,7 @@ export class GoogleDriveClient {
 
   // Sign out user
   async signOut(): Promise<void> {
-    if (!this.isInitialized) return;
+    if (!this.isInitialized || !this.gapi) return;
 
     try {
       const authInstance = this.gapi.auth2.getAuthInstance();
@@ -106,9 +132,13 @@ export class GoogleDriveClient {
 
   // Check if user is signed in
   isSignedIn(): boolean {
-    if (!this.isInitialized) return false;
-    const authInstance = this.gapi.auth2.getAuthInstance();
-    return authInstance.isSignedIn.get();
+    if (!this.isInitialized || !this.gapi) return false;
+    try {
+      const authInstance = this.gapi.auth2.getAuthInstance();
+      return authInstance.isSignedIn.get();
+    } catch (error) {
+      return false;
+    }
   }
 
   // Get or create the Saavi Product Images folder
